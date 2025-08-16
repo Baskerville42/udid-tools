@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UDID Tools
 
-## Getting Started
+**UDID Tools** is a simple web service for extracting the **UDID** and other unique identifiers of iOS devices (iPhone, iPad).  
+The service works fully online — no apps or Mac required.
 
-First, run the development server:
+🔗 Website: [https://www.udid.tools](https://www.udid.tools)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## How It Works
+
+1. Open the website in Safari on your iPhone or iPad.
+2. Tap the **Get UDID** button.
+3. The device will download and install a temporary configuration profile (signed MDM profile).
+4. Once confirmed, the profile securely sends unique identifiers to the server.
+5. You are automatically redirected to a result page showing:
+    - **UDID**
+    - **IMEI**
+    - **MEID**
+    - **SERIAL**
+    - **PRODUCT**
+    - **VERSION**
+
+The profile can be safely removed from device settings right after use.
+
+### Available Parameters
+
+As of **2025/08/18**, the available parameters are:
+
+```js
+["IMEI","MEID","PRODUCT","SERIAL","UDID","VERSION"]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+_Source: [StackOverflow answer](https://stackoverflow.com/a/13845371) (Dec 12, 2012)_
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Usage
 
-## Learn More
+1. Go to [https://www.udid.tools](https://www.udid.tools)
+2. Tap **Download Profile**
+3. Install and confirm the profile
+4. Instantly see your **UDID** in the browser
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is built with [Next.js](https://nextjs.org).
 
-## Deploy on Vercel
+To run locally, you **must provide valid Apple certificates** to sign the configuration profile:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- An **Apple Distribution Certificate** in `.p12` format (converted to base64, password protected).
+- Apple’s **Root** and **Intermediate** certificates to complete the trust chain.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Required environment variables:
+
+```bash
+MDM_SERVER_P12_BASE64=        # Base64 string of your .p12 distribution certificate
+MDM_SERVER_P12_PASSCODE=      # Password for the .p12 certificate
+APPLE_ROOT_CERT_URL=https://www.apple.com/appleca/AppleIncRootCertificate.cer
+APPLE_INTERMEDIATE_CERT_URL=https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
+```
+
+### Run locally:
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:3000 in your browser.

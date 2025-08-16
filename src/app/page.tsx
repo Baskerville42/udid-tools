@@ -1,103 +1,148 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
+    <main className="font-sans">
+      {/* Hero */}
+      <section className="mx-auto max-w-4xl px-6 pt-12 pb-8 text-center">
+        <div className="flex justify-center">
+          <Image
+            className="dark:invert"
+            src="/logo-full.svg"
+            alt="UDID Tools logo"
+            width={220}
+            height={46}
+            priority
+          />
+        </div>
+
+        <h1 className="mt-6 text-3xl font-bold tracking-tight sm:text-4xl">
+          Extract your iPhone &amp; iPad UDID Online
+        </h1>
+
+        <p className="mt-4 text-lg text-gray-700">
+          UDID Tools is the fastest and safest way to get your device UDID directly in your browser.
+          No apps required.
+        </p>
+
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            className="inline-flex h-12 items-center justify-center rounded-full border border-black/10 px-6 text-base font-medium transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
+            href="/api/register.signed.mobileconfig"
+            aria-label="Download configuration profile to extract UDID"
+          >
+            Download Profile
+          </a>
+
+          <Link
+            href="/#how-it-works"
+            className="inline-flex h-12 items-center justify-center rounded-full px-6 text-base font-medium underline-offset-4 hover:underline"
+          >
+            How it works
+          </Link>
+        </div>
+
+        <p className="mt-3 text-sm text-gray-500">
+          Works on iPhone &amp; iPad. You may be asked to allow profile download.
+        </p>
+      </section>
+
+      {/* Benefits */}
+      <section aria-labelledby="benefits-heading" className="mx-auto max-w-4xl px-6 py-8">
+        <h2 id="benefits-heading" className="mb-3 text-2xl font-semibold">
+          Why use UDID Tools?
+        </h2>
+        <ul className="mx-auto max-w-2xl list-inside list-disc space-y-1 text-left">
+          <li>
+            <span className="font-medium">Secure:</span> No data stored.
           </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
+          <li>
+            <span className="font-medium">Simple:</span> Just a few clicks.
+          </li>
+          <li>
+            <span className="font-medium">Fast:</span> Get UDID in seconds.
+          </li>
+        </ul>
+      </section>
+
+      {/* How it works */}
+      <section
+        id="how-it-works"
+        aria-labelledby="how-heading"
+        className="mx-auto max-w-4xl px-6 py-8"
+      >
+        <h2 id="how-heading" className="mb-3 text-2xl font-semibold">
+          How it works
+        </h2>
+        <ol className="mx-auto max-w-2xl list-inside list-decimal space-y-2 text-left">
+          <li>
+            Tap <strong>Download Profile</strong> and confirm the download in Safari.
+          </li>
+          <li>
+            Open <strong>Settings &gt; Profile Downloaded</strong> and install the profile.
+          </li>
+          <li>
+            After installation, iOS sends device attributes and you&apos;re redirected back to the
+            success page with your <strong>UDID</strong>.
           </li>
         </ol>
+        <p className="mt-3 text-sm text-gray-500">
+          If you don’t see a redirect, return to this page in Safari and the flow will resume
+          automatically.
+        </p>
+      </section>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* FAQ (matches JSON-LD in layout) */}
+      <section id="faq" aria-labelledby="faq-heading" className="mx-auto max-w-4xl px-6 py-8">
+        <h2 id="faq-heading" className="mb-3 text-2xl font-semibold">
+          Frequently asked questions
+        </h2>
+
+        <div className="space-y-6 text-left">
+          <div>
+            <h3 className="font-semibold">What is a UDID?</h3>
+            <p className="text-gray-700">
+              UDID stands for Unique Device Identifier. It&apos;s a unique ID assigned to every
+              Apple device.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-semibold">Is it safe to use UDID Tools?</h3>
+            <p className="text-gray-700">
+              Yes. UDID Tools does not store your UDID or any personal information. Everything
+              happens in your browser.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-semibold">Do I need to install an app?</h3>
+            <p className="text-gray-700">
+              No apps required. You download a small configuration profile, and we show your UDID on
+              the success page.
+            </p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      {/* Trust note / CTA */}
+      <section className="mx-auto max-w-4xl px-6 pb-12">
+        <div className="rounded-2xl border border-black/10 p-5 sm:p-6 dark:border-white/15">
+          <p className="text-sm text-gray-600">
+            <span className="font-medium">Privacy:</span> we don’t persist your UDID or device info
+            on our servers.
+          </p>
+          <div className="mt-4">
+            <a
+              className="inline-flex h-12 items-center justify-center rounded-full border border-black/10 px-6 text-base font-medium transition hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
+              href="/api/register.signed.mobileconfig"
+            >
+              Download Profile
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }

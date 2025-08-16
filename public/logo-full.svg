@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img">
+
+    <defs>
+        <style>
+            .mark { fill: #d2d4cd; }
+            .text { fill: #d2d4cd; font-family: Inter, SF Pro Display, Helvetica, Arial, sans-serif; font-weight: 800; }
+            .sub  { fill: #d2d4cd; font-family: Inter, SF Pro Display, Helvetica, Arial, sans-serif; font-weight: 500; }
+        </style>
+    </defs>
+
+    <g transform="translate(220,200)" class="mark">
+        <rect x="0"    y="180" width="6" height="160" rx="11"/>
+        <rect x="46"   y="150" width="8" height="220" rx="11"/>
+        <rect x="92"   y="120" width="10" height="280" rx="11"/>
+        <rect x="138"  y="94"  width="12" height="332" rx="11"/>
+        <rect x="184"  y="68"  width="14" height="384" rx="11"/>
+        <rect x="230"  y="48"  width="16" height="424" rx="11"/>
+        <rect x="276"  y="28"  width="18" height="464" rx="11"/>
+        <rect x="322"  y="16"  width="20" height="488" rx="11"/>
+        <rect x="368"  y="8"   width="22" height="504" rx="11"/>
+    </g>
+
+    <g transform="translate(660,430)">
+        <text class="text" x="0" y="0" font-size="170" letter-spacing="2">UDID</text>
+        <text class="sub"  x="0" y="170" font-size="125" letter-spacing="3">TOOLS</text>
+    </g>
+</svg>
