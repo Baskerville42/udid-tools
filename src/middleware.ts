@@ -6,6 +6,8 @@ const CANONICAL_HOST = "www.udid.tools";
 export function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
+  if (process.env.NODE_ENV === "development") return NextResponse.next();
+
   const needsHostFix = url.hostname !== CANONICAL_HOST;
   const needsHttps = url.protocol !== "https:";
 
