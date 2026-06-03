@@ -53,6 +53,7 @@
     "node-forge": "^1.4.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "simple-icons": "^16.22.0",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
     "xml2js": "^0.6.2"

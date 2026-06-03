@@ -2,8 +2,21 @@
 
 import React from "react";
 import Link from "next/link";
-import { GithubIcon, LinkedinIcon } from "lucide-react";
+import { siGithub } from "simple-icons";
 import Logo from "@/app/components/Logo";
+
+type BrandIconProps = {
+  className?: string;
+  path: string;
+};
+
+function BrandIcon({ className, path }: BrandIconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d={path} />
+    </svg>
+  );
+}
 
 export default function Footer() {
   return (
@@ -23,15 +36,17 @@ export default function Footer() {
               className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 transition-colors hover:bg-slate-200"
               aria-label="GitHub"
             >
-              <GithubIcon className="h-4 w-4 text-slate-600" />
+              <BrandIcon className="h-4 w-4 text-slate-600" path={siGithub.path} />
             </a>
             <a
               href="https://www.linkedin.com/in/alexandertartmin"
               target="_blank"
               className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 transition-colors hover:bg-slate-200"
-              aria-label="Twitter"
+              aria-label="LinkedIn"
             >
-              <LinkedinIcon className="h-4 w-4 text-slate-600" />
+              <span className="text-sm font-bold text-slate-600" aria-hidden="true">
+                in
+              </span>
             </a>
           </div>
         </div>
