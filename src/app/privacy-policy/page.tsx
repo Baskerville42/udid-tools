@@ -1,0 +1,101 @@
+import type { Metadata } from "next";
+import LegalPage, { type LegalSection } from "@/app/components/legal/LegalPage";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Privacy Policy for UDID Tools and the UDID extraction flow.",
+  alternates: {
+    canonical: "/privacy-policy",
+  },
+};
+
+const sections: LegalSection[] = [
+  {
+    title: "Overview",
+    paragraphs: [
+      "UDID Tools is a free, open-source public utility that helps you retrieve your Apple device UDID and related technical information through Safari using an iOS configuration profile flow.",
+      "This Privacy Policy explains what information may be processed when you use the service. If you do not agree with this policy, do not use the service.",
+    ],
+  },
+  {
+    title: "Information processed during the UDID flow",
+    paragraphs: [
+      "When you choose to download and install the configuration profile, iOS may send device attributes back to the service as part of Apple’s profile response. The current code parses those attributes and redirects you to a results page so they can be displayed in your browser.",
+      "The information may include:",
+    ],
+    items: [
+      "UDID;",
+      "device name or related device label, if provided by iOS;",
+      "product type or model, such as an iPhone or iPad product identifier;",
+      "iOS or iPadOS version;",
+      "serial number, IMEI, MEID, or similar identifiers if provided by iOS;",
+      "other technical attributes provided by Apple or iOS as part of the profile response.",
+    ],
+  },
+  {
+    title: "How the information is used",
+    paragraphs: [
+      "The UDID and device information are used only to complete the requested flow and display the result to you. The service is designed not to persist or store your UDID or personal information on the server.",
+      "The current implementation converts the iOS profile response into URL query parameters for the success page. This allows the browser to show the result without creating an account or saving a server-side record.",
+    ],
+  },
+  {
+    title: "No accounts, payments, cookies, or marketing features",
+    paragraphs: [
+      "The app currently does not provide user accounts, payment features, newsletters, marketing features, or paid services. No payment data is collected because the service is free.",
+      "Based on the current app functionality and UI copy, the service does not use analytics cookies, marketing cookies, or account tracking. No data is sold.",
+    ],
+  },
+  {
+    title: "Technical logs and hosting infrastructure",
+    paragraphs: [
+      "Although UDID Tools is designed not to store UDID or personal information, hosting providers, CDNs, network infrastructure, or serverless platforms may automatically process technical data for security, debugging, abuse prevention, and operation.",
+      "That technical data may include IP address, user-agent, timestamps, request URLs, referrer information, response status, error details, and basic request logs. The app code also writes server-side error messages when profile signing or XML parsing fails; those error logs are used to diagnose operational problems.",
+    ],
+  },
+  {
+    title: "Data retention",
+    paragraphs: [
+      "UDID and device data are not intentionally stored by the service. They are processed to display the requested result and complete the flow.",
+      "Transient technical logs may exist depending on hosting or infrastructure provider behavior. The exact retention period for those logs depends on the provider configuration and operational needs.",
+    ],
+  },
+  {
+    title: "Security",
+    paragraphs: [
+      "Reasonable care is taken to operate the service safely, but no internet service can be guaranteed to be 100% secure. You use the service at your own risk.",
+      "Only install a configuration profile if you understand what it is and are comfortable with the flow. Remove the profile after use if you no longer need it.",
+    ],
+  },
+  {
+    title: "Children’s privacy",
+    paragraphs: [
+      "The service is a technical utility and is not directed to children. I do not knowingly collect children’s personal data. If you believe a child has provided information through the service, please use the contact options below.",
+    ],
+  },
+  {
+    title: "Your rights and choices",
+    paragraphs: [
+      "Depending on where you live, you may have rights regarding personal information that applies to you. Because the service is designed not to intentionally store UDID or personal information, there may be no account record or stored UDID record to access, correct, or delete.",
+      "If you have a privacy request or question, open an issue at https://github.com/Baskerville42/udid-tools/issues.",
+    ],
+  },
+  {
+    title: "Changes to this Privacy Policy",
+    paragraphs: [
+      "This Privacy Policy may be updated from time to time. The updated version will be posted on this page. Continued use of the service after changes are posted means you accept the updated policy.",
+    ],
+  },
+];
+
+export default function PrivacyPolicyPage() {
+  return (
+    <LegalPage
+      label="Privacy"
+      title="Privacy Policy"
+      description="This policy describes how UDID Tools processes information while helping you retrieve your Apple device UDID and related device details."
+      lastUpdated="June 2, 2026"
+      sections={sections}
+    />
+  );
+}
