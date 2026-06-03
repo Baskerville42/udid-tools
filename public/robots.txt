@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.udid.tools
+
+# Sitemaps
+Sitemap: https://www.udid.tools/sitemap.xml
