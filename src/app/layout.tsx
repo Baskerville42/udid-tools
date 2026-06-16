@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
+import VercelAnalytics from "@/app/components/VercelAnalytics";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -135,6 +136,7 @@ export default function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webApplicationJsonLd) }}
         />
+        <VercelAnalytics />
       </body>
     </html>
   );

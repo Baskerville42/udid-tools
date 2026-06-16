@@ -40,17 +40,24 @@ const sections: LegalSection[] = [
     ],
   },
   {
-    title: "No accounts, payments, cookies, or marketing features",
+    title: "No accounts, payments, or marketing features",
     paragraphs: [
       "The app currently does not provide user accounts, payment features, newsletters, marketing features, or paid services. No payment data is collected because the service is free.",
-      "Based on the current app functionality and UI copy, the service does not use analytics cookies, marketing cookies, or account tracking. No data is sold.",
+      "The service does not sell data, run advertising, or use marketing tracking.",
+    ],
+  },
+  {
+    title: "Vercel Web Analytics",
+    paragraphs: [
+      "UDID Tools may use Vercel Web Analytics on public informational pages to understand aggregate traffic, page views, referrers, devices, countries or regions, and similar usage metrics. This helps evaluate whether SEO and documentation improvements are working.",
+      "Vercel Web Analytics is intended for product and traffic measurement, not advertising or cross-site marketing tracking. The analytics component is not intentionally rendered on the /success results page because that page may contain device identifiers in URL parameters.",
     ],
   },
   {
     title: "Technical logs and hosting infrastructure",
     paragraphs: [
       "Although UDID Tools is designed not to store UDID or personal information, hosting providers, CDNs, network infrastructure, or serverless platforms may automatically process technical data for security, debugging, abuse prevention, and operation.",
-      "That technical data may include IP address, user-agent, timestamps, request URLs, referrer information, response status, error details, and basic request logs. The app code also writes server-side error messages when profile signing or XML parsing fails; those error logs are used to diagnose operational problems.",
+      "That technical data may include IP address, user-agent, timestamps, request URLs, referrer information, response status, error details, basic request logs, and analytics events for public pages. The app code also writes server-side error messages when profile signing or XML parsing fails; those error logs are used to diagnose operational problems.",
     ],
   },
   {
@@ -94,7 +101,7 @@ export default function PrivacyPolicyPage() {
       label="Privacy"
       title="Privacy Policy"
       description="This policy describes how UDID Tools processes information while helping you retrieve your Apple device UDID and related device details."
-      lastUpdated="June 2, 2026"
+      lastUpdated="June 16, 2026"
       sections={sections}
     />
   );
