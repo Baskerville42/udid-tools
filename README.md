@@ -14,12 +14,12 @@ The service works fully online — no apps or Mac required.
 3. The device will download and install a temporary configuration profile (signed MDM profile).
 4. Once confirmed, the profile securely sends unique identifiers to the server.
 5. You are automatically redirected to a result page showing:
-    - **UDID**
-    - **IMEI**
-    - **MEID**
-    - **SERIAL**
-    - **PRODUCT**
-    - **VERSION**
+   - **UDID**
+   - **IMEI**
+   - **MEID**
+   - **SERIAL**
+   - **PRODUCT**
+   - **VERSION**
 
 The profile can be safely removed from device settings right after use.
 
@@ -28,7 +28,7 @@ The profile can be safely removed from device settings right after use.
 As of **2025/08/18**, the available parameters are:
 
 ```js
-["IMEI","MEID","PRODUCT","SERIAL","UDID","VERSION"]
+["IMEI", "MEID", "PRODUCT", "SERIAL", "UDID", "VERSION"];
 ```
 
 _Source: [StackOverflow answer](https://stackoverflow.com/a/13845371) (Dec 12, 2012)_
@@ -63,6 +63,7 @@ APPLE_INTERMEDIATE_CERT_URL=https://www.apple.com/certificateauthority/AppleWWDR
 ```
 
 ### Run locally:
+
 ```bash
 npm install
 npm run dev
