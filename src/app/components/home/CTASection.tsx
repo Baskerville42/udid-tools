@@ -39,7 +39,8 @@ export default function CTASection() {
           transition={{ delay: 0.2 }}
           className="mx-auto mb-10 max-w-xl text-lg text-slate-400"
         >
-          Open this page on your iOS device and tap the button below. It takes less than 30 seconds.
+          Open this page in Safari on the iPhone or iPad you want to identify and tap the button
+          below.
         </MotionWrapper>
 
         <MotionWrapper
@@ -53,7 +54,7 @@ export default function CTASection() {
             className="group inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 font-semibold text-slate-900 shadow-xl transition-all hover:bg-slate-50"
             aria-label="Download configuration profile to extract UDID"
           >
-            Get UDID Now
+            Get iPhone UDID Now
             <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </MotionWrapper>
@@ -66,7 +67,7 @@ export default function CTASection() {
           transition={{ delay: 0.4 }}
           className="mt-6 text-sm text-slate-500"
         >
-          Free forever • No sign-up required
+          Free forever • No sign-up required • Open-source project
         </MotionWrapper>
       </div>
     </section>

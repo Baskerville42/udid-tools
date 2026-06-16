@@ -26,7 +26,7 @@ export default function Footer() {
           <Logo />
 
           <p className="text-sm text-slate-500">
-            Built for developers • No data stored • Open source friendly
+            Open-source • No account required • Built for developers
           </p>
 
           <div className="flex items-center gap-4">
@@ -56,6 +56,12 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} UDID Tools. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
+            <Link
+              href="/guides"
+              className="text-xs text-slate-400 transition-colors hover:text-slate-600"
+            >
+              Guides
+            </Link>
             <Link
               href="/privacy-policy"
               className="text-xs text-slate-400 transition-colors hover:text-slate-600"

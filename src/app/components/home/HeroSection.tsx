@@ -20,7 +20,7 @@ export default function HeroSection() {
           >
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5">
               <Shield className="h-3.5 w-3.5 text-blue-600" />
-              <span className="text-xs font-medium text-blue-700">Secure & Privacy-First</span>
+              <span className="text-xs font-medium text-blue-700">Open-source UDID finder</span>
             </div>
           </MotionWrapper>
 
@@ -31,10 +31,10 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-4xl leading-[1.1] font-bold tracking-tight text-slate-900 md:text-5xl lg:text-6xl"
           >
-            Get UDID & device info
+            Get your iPhone UDID online
             <br />
             <span className="bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
-              via MDM in seconds
+              without iTunes or Xcode
             </span>
           </MotionWrapper>
 
@@ -45,8 +45,8 @@ export default function HeroSection() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-slate-600"
           >
-            The fastest way to retrieve UDID, serial number, and device details for iOS and iPadOS.
-            No cables, no Xcode, no hassle.
+            Find your iPhone or iPad UDID directly in Safari with a temporary configuration profile.
+            No Mac, PC, USB cable, Apple ID, or app install required.
           </MotionWrapper>
 
           <MotionWrapper
@@ -60,7 +60,7 @@ export default function HeroSection() {
               className="group inline-flex items-center gap-2 rounded-xl bg-slate-900 px-6 py-3.5 font-medium text-white shadow-lg shadow-slate-900/10 transition-all hover:bg-slate-800 hover:shadow-xl hover:shadow-slate-900/15"
               aria-label="Download configuration profile to extract UDID"
             >
-              Get UDID
+              Get iPhone UDID
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <Link
@@ -90,7 +90,7 @@ export default function HeroSection() {
             </div>
             <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-green-500" />
-              <span>Works on Safari</span>
+              <span>Safari on iPhone/iPad</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-green-500" />

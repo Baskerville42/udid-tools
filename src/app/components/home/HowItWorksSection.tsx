@@ -6,22 +6,23 @@ const steps = [
   {
     number: "01",
     icon: Download,
-    title: "Install MDM Profile",
+    title: "Download Profile in Safari",
     description:
-      "Tap the button to download a lightweight configuration profile. Safari will prompt you to review it.",
+      "Tap Get UDID on the iPhone or iPad you want to identify. Safari will prompt you to allow a lightweight configuration profile.",
   },
   {
     number: "02",
     icon: CheckCircle,
-    title: "Confirm Installation",
+    title: "Install in Settings",
     description:
-      "Go to Settings → Profile Downloaded and tap Install. The profile auto-removes after retrieval.",
+      "Go to Settings → Profile Downloaded and tap Install so iOS can send the device attributes needed to show your UDID.",
   },
   {
     number: "03",
     icon: Eye,
     title: "View Device Info",
-    description: "Your UDID and device details are instantly displayed. Copy them with one tap.",
+    description:
+      "Your UDID and available device details are displayed on the result page. Copy the identifier with one tap.",
   },
 ];
 
@@ -57,7 +58,7 @@ export default function HowItWorksSection() {
             transition={{ delay: 0.2 }}
             className="mt-4 text-slate-600"
           >
-            Three simple steps to get your device information
+            Three simple steps to get your iPhone or iPad UDID without iTunes, Finder, or Xcode
           </MotionWrapper>
         </div>
 

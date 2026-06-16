@@ -21,17 +21,21 @@ const OG_IMAGE = `${SITE_URL}/og-image.png`;
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "UDID Tools – Extract your iPhone & iPad UDID",
+    default: "Get iPhone UDID Online - No iTunes or Xcode",
     template: "%s · UDID Tools",
   },
   description:
-    "UDID Tools is a simple and secure service to extract your iPhone or iPad UDID directly in your browser.",
+    "Get your iPhone or iPad UDID online in Safari. No iTunes, Xcode, Apple ID, cable, or app install required.",
   keywords: [
     "UDID",
     "iPhone UDID",
     "iPad UDID",
     "get UDID online",
+    "get iPhone UDID online",
+    "find iPhone UDID without iTunes",
     "extract UDID",
+    "UDID finder",
+    "iOS UDID",
     "Apple device identifier",
   ],
   alternates: {
@@ -41,9 +45,9 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "UDID Tools – Extract your iPhone & iPad UDID",
+    title: "Get iPhone UDID Online - No iTunes or Xcode",
     description:
-      "Get your iPhone or iPad UDID in seconds with UDID Tools. Secure, fast, no apps required.",
+      "Find your iPhone or iPad UDID in Safari with a temporary configuration profile. No iTunes, Xcode, Apple ID, or cable required.",
     images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "UDID Tools Preview" }],
     locale: "en_US",
   },
@@ -51,8 +55,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: TWITTER,
     creator: TWITTER,
-    title: "UDID Tools – Extract your iPhone & iPad UDID",
-    description: "Extract your iPhone or iPad UDID in seconds with UDID Tools.",
+    title: "Get iPhone UDID Online - No iTunes or Xcode",
+    description: "Find your iPhone or iPad UDID online in Safari with UDID Tools.",
     images: [OG_IMAGE],
   },
   robots: {
@@ -83,43 +87,28 @@ const websiteJsonLd = {
   "@type": "WebSite",
   name: SITE_NAME,
   url: SITE_URL,
-  description: "UDID Tools helps you securely extract your iPhone and iPad UDID online.",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: `${SITE_URL}/?q={search_term_string}`,
-    "query-input": "required name=search_term_string",
-  },
+  description: "UDID Tools helps you find your iPhone and iPad UDID online in Safari.",
 };
 
-const faqJsonLd = {
+const webApplicationJsonLd = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What is a UDID?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "UDID stands for Unique Device Identifier. It's a unique ID assigned to every Apple device.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is it safe to use UDID Tools?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes, UDID Tools does not store your UDID or any personal information. Everything happens in your browser.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Do I need to install an app?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "No apps required. You download a small configuration profile, and we show your UDID on the success page.",
-      },
-    },
-  ],
+  "@type": "WebApplication",
+  name: SITE_NAME,
+  url: SITE_URL,
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "iOS, iPadOS",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+  creator: {
+    "@type": "Person",
+    name: "Alexander Tartmin",
+    url: "https://www.linkedin.com/in/alexandertartmin",
+  },
+  description:
+    "A free open-source utility for retrieving an iPhone or iPad UDID through Safari using an iOS configuration profile flow.",
 };
 
 export default function RootLayout({
@@ -139,12 +128,12 @@ export default function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
-        {/* JSON-LD: FAQPage */}
+        {/* JSON-LD: WebApplication */}
         <Script
-          id="ld-faq"
+          id="ld-web-application"
           type="application/ld+json"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webApplicationJsonLd) }}
         />
       </body>
     </html>

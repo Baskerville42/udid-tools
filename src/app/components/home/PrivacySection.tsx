@@ -1,12 +1,12 @@
 import React from "react";
-import { Shield, Clock, UserX, Server } from "lucide-react";
+import { Code2, Clock, UserX, Server, Shield } from "lucide-react";
 import MotionWrapper from "@/app/components/MotionWrapper";
 
 const privacyFeatures = [
   {
     icon: Clock,
-    title: "Temporary Storage Only",
-    description: "Device data is automatically deleted after retrieval. We keep nothing.",
+    title: "No Account Record",
+    description: "The flow is designed to show your result without creating a user account.",
   },
   {
     icon: UserX,
@@ -15,13 +15,13 @@ const privacyFeatures = [
   },
   {
     icon: Server,
-    title: "No Server Logs",
-    description: "We don't log or track your device information on our servers.",
+    title: "No Intentional Retention",
+    description: "UDID data is processed to display the result, not to build a stored profile.",
   },
   {
-    icon: Shield,
-    title: "Profile Auto-Removes",
-    description: "The MDM profile deletes itself after sending device info.",
+    icon: Code2,
+    title: "Open Source",
+    description: "The project is public on GitHub, so the implementation can be inspected.",
   },
 ];
 
@@ -42,19 +42,29 @@ export default function PrivacySection() {
               Your data stays yours
             </h2>
             <p className="mb-8 leading-relaxed text-slate-600">
-              We built UDID Tools with privacy as a core principle. No tracking, no data retention,
-              no hidden agendas. Just a simple tool that does what it says.
+              UDID Tools is an open-source project built to solve one practical problem: show your
+              Apple device identifier without asking for an account, payment, Apple ID, or desktop
+              software.
             </p>
 
-            <div className="inline-flex items-center gap-3 rounded-xl border border-green-100 bg-green-50 px-4 py-3">
+            <a
+              href="https://github.com/Baskerville42/udid-tools"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 rounded-xl border border-green-100 bg-green-50 px-4 py-3 transition-colors hover:border-green-200 hover:bg-green-100"
+            >
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
                 <Shield className="h-4 w-4 text-green-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-green-900">Trusted by 50,000+ developers</p>
-                <p className="text-xs text-green-700">Zero security incidents since launch</p>
+                <p className="text-sm font-medium text-green-900">
+                  Public source code, simple flow
+                </p>
+                <p className="text-xs text-green-700">
+                  Review the implementation before using the tool
+                </p>
               </div>
-            </div>
+            </a>
           </MotionWrapper>
 
           <div className="grid gap-4 sm:grid-cols-2">

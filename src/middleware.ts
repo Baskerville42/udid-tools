@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const CANONICAL_HOST = "www.udid.tools";
+const NOINDEX_HEADER_VALUE = "noindex, nofollow, noarchive, nosnippet";
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl;
@@ -17,7 +18,13 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+
+  if (url.pathname === "/success" || url.pathname.startsWith("/success/")) {
+    response.headers.set("X-Robots-Tag", NOINDEX_HEADER_VALUE);
+  }
+
+  return response;
 }
 
 export const config = {

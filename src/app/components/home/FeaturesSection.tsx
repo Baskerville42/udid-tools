@@ -12,7 +12,7 @@ const features = [
   {
     icon: Smartphone,
     title: "Device Model",
-    description: "Exact hardware model identification (iPhone 15 Pro, iPad Air, etc.)",
+    description: "Hardware model details when iOS provides them in the profile response",
   },
   {
     icon: Layers,
@@ -22,7 +22,7 @@ const features = [
   {
     icon: Hash,
     title: "Serial Number",
-    description: "Hardware serial for warranty checks and device tracking",
+    description: "Serial, IMEI, MEID, and related identifiers when available from iOS",
   },
 ];
 
@@ -58,7 +58,7 @@ export default function FeaturesSection() {
             transition={{ delay: 0.2 }}
             className="mt-4 text-slate-600"
           >
-            All the device details you need in one place
+            The result page shows the identifiers iOS provides for your device
           </MotionWrapper>
         </div>
 

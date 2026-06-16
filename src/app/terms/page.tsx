@@ -35,7 +35,7 @@ const sections: LegalSection[] = [
     title: "Configuration profiles",
     paragraphs: [
       "You are responsible for understanding what an iOS configuration profile is before downloading or installing it. If you are not comfortable installing a profile, do not use this service.",
-      "You should remove the profile after use if you no longer need it. Although the current site copy describes the profile as temporary and self-removing, you remain responsible for checking your device settings and removing any profile that remains installed.",
+      "You should remove the profile after use if you no longer need it. You remain responsible for checking your device settings and removing any profile that remains installed.",
     ],
   },
   {
@@ -69,7 +69,9 @@ const sections: LegalSection[] = [
   },
   {
     title: "Prohibited uses",
-    paragraphs: ["You agree not to use the service for any improper or harmful purpose, including:"],
+    paragraphs: [
+      "You agree not to use the service for any improper or harmful purpose, including:",
+    ],
     items: [
       "unlawful activity;",
       "abuse, scraping, overloading, attacking, or reverse-engineering the hosted infrastructure;",

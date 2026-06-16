@@ -3,6 +3,8 @@ import HeroSection from "@/app/components/home/HeroSection";
 import HowItWorksSection from "@/app/components/home/HowItWorksSection";
 import FeaturesSection from "@/app/components/home/FeaturesSection";
 import PrivacySection from "@/app/components/home/PrivacySection";
+import GuidesSection from "@/app/components/home/GuidesSection";
+import FAQSection from "@/app/components/home/FAQSection";
 import CTASection from "@/app/components/home/CTASection";
 import Footer from "@/app/components/Footer";
 
@@ -16,6 +18,8 @@ export default function Home() {
         <HowItWorksSection />
         <FeaturesSection />
         <PrivacySection />
+        <GuidesSection />
+        <FAQSection />
         <CTASection />
       </main>
 
