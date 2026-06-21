@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { siGithub } from "simple-icons";
 import Logo from "@/app/components/Logo";
@@ -18,7 +18,17 @@ function BrandIcon({ className, path }: BrandIconProps) {
   );
 }
 
+const subscribeToCurrentYear = () => () => {};
+const getCurrentYear = () => new Date().getFullYear();
+const getServerYear = () => null;
+
 export default function Footer() {
+  const currentYear = useSyncExternalStore(
+    subscribeToCurrentYear,
+    getCurrentYear,
+    getServerYear
+  );
+
   return (
     <footer className="w-full border-t border-slate-100 bg-slate-50/50">
       <div className="mx-auto max-w-6xl px-6 py-12">
@@ -53,7 +63,7 @@ export default function Footer() {
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-8 sm:flex-row">
           <p className="text-xs text-slate-400">
-            &copy; {new Date().getFullYear()} UDID Tools. All rights reserved.
+            &copy; {currentYear} UDID Tools. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <Link
