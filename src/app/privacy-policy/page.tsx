@@ -54,17 +54,24 @@ const sections: LegalSection[] = [
     ],
   },
   {
+    title: "Sentry error and performance monitoring",
+    paragraphs: [
+      "UDID Tools uses Sentry to detect application errors, diagnose failures, measure request and operation durations, and understand the health of the profile retrieval flow. Sentry may process error messages, stack traces, route names, timestamps, release and environment identifiers, browser or device category, request status, timing data, and privacy-limited technical breadcrumbs.",
+      "The integration is configured not to send default personal information or request bodies. Device identifiers and URL query parameters are filtered from Sentry events, and performance traces for the /success results page are not sampled. Session Replay is not enabled. Sentry data is used for security, reliability, debugging, and performance monitoring, not advertising.",
+    ],
+  },
+  {
     title: "Technical logs and hosting infrastructure",
     paragraphs: [
       "Although UDID Tools is designed not to store UDID or personal information, hosting providers, CDNs, network infrastructure, or serverless platforms may automatically process technical data for security, debugging, abuse prevention, and operation.",
-      "That technical data may include IP address, user-agent, timestamps, request URLs, referrer information, response status, error details, basic request logs, and analytics events for public pages. The app code also writes server-side error messages when profile signing or XML parsing fails; those error logs are used to diagnose operational problems.",
+      "That technical data may include IP address, user-agent, timestamps, request paths, referrer information, response status, error details, basic request logs, traces, metrics, and analytics events for public pages. The app also records structured operational events when profile signing or XML parsing succeeds or fails; these records intentionally exclude device identifiers and profile payloads.",
     ],
   },
   {
     title: "Data retention",
     paragraphs: [
       "UDID and device data are not intentionally stored by the service. They are processed to display the requested result and complete the flow.",
-      "Transient technical logs may exist depending on hosting or infrastructure provider behavior. The exact retention period for those logs depends on the provider configuration and operational needs.",
+      "Transient technical logs, errors, traces, and metrics may exist in Vercel or Sentry according to the configured provider retention periods and operational needs.",
     ],
   },
   {
@@ -101,7 +108,7 @@ export default function PrivacyPolicyPage() {
       label="Privacy"
       title="Privacy Policy"
       description="This policy describes how UDID Tools processes information while helping you retrieve your Apple device UDID and related device details."
-      lastUpdated="June 16, 2026"
+      lastUpdated="June 21, 2026"
       sections={sections}
     />
   );

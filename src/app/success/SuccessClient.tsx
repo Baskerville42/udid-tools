@@ -1,6 +1,7 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import * as Sentry from "@sentry/nextjs";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, AlertCircle, Copy, Check, Smartphone, ArrowLeft, Share2 } from "lucide-react";
@@ -36,6 +37,18 @@ function SuccessContent() {
 
   const nonEmpty = fields.filter((field) => !!field.value);
   const hasDeviceInfo = nonEmpty.length > 0;
+
+  useEffect(() => {
+    const outcome = hasDeviceInfo ? "success" : "missing_device_info";
+    Sentry.addBreadcrumb({
+      category: "udid-flow",
+      message: "Device result rendered",
+      data: { field_count: nonEmpty.length, outcome, stage: "result_rendered" },
+    });
+    Sentry.metrics.count("udid_tools.flow.completed", 1, {
+      attributes: { outcome },
+    });
+  }, [hasDeviceInfo, nonEmpty.length]);
   const deviceData: DeviceData = {
     ...sampleDeviceData,
     udid: searchParams.get("UDID") || sampleDeviceData.udid,
@@ -62,6 +75,11 @@ function SuccessContent() {
           )
         : formatFields();
     const ok = await writeClipboardSafe(text);
+    Sentry.addBreadcrumb({
+      category: "udid-flow.action",
+      message: "Copy device info attempted",
+      data: { format: as, outcome: ok ? "success" : "failure" },
+    });
     if (ok) {
       setCopied(true);
       toast.success(`All device info${as === "json" ? " (JSON)" : ""} copied to clipboard`);
@@ -81,6 +99,11 @@ function SuccessContent() {
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
+    Sentry.addBreadcrumb({
+      category: "udid-flow.action",
+      message: "Device info downloaded",
+      data: { format: "txt" },
+    });
   };
 
   const canShare = typeof navigator !== "undefined" && "share" in navigator;
@@ -88,8 +111,16 @@ function SuccessContent() {
   const shareAll = async () => {
     try {
       await navigator.share?.({ title: "Device info", text: formatFields(true) });
+      Sentry.addBreadcrumb({
+        category: "udid-flow.action",
+        message: "Native share completed",
+      });
     } catch {
-      /* user canceled */
+      Sentry.addBreadcrumb({
+        category: "udid-flow.action",
+        message: "Native share dismissed",
+        level: "info",
+      });
     }
   };
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import forge from "node-forge";
 import { randomUUID } from "crypto";
+import * as Sentry from "@sentry/nextjs";
 
 const APPLE_ROOT_CERT_URL = process.env.APPLE_ROOT_CERT_URL;
 const APPLE_INTERMEDIATE_CERT_URL = process.env.APPLE_INTERMEDIATE_CERT_URL;
@@ -24,12 +25,22 @@ async function fetchAppleCerts() {
 
   const now = Date.now();
   if (cachedRootPem && cachedInterPem && now - cachedAt < CACHE_TTL_MS) {
+    Sentry.metrics.count("udid_tools.apple_cert_cache", 1, {
+      attributes: { result: "hit" },
+    });
     return { rootPem: cachedRootPem, interPem: cachedInterPem };
   }
-  const [rootRes, interRes] = await Promise.all([
-    axios.get<ArrayBuffer>(APPLE_ROOT_CERT_URL, { responseType: "arraybuffer" }),
-    axios.get<ArrayBuffer>(APPLE_INTERMEDIATE_CERT_URL, { responseType: "arraybuffer" }),
-  ]);
+  Sentry.metrics.count("udid_tools.apple_cert_cache", 1, {
+    attributes: { result: "miss" },
+  });
+  const [rootRes, interRes] = await Sentry.startSpan(
+    { name: "Fetch Apple certificate chain", op: "http.client" },
+    () =>
+      Promise.all([
+        axios.get<ArrayBuffer>(APPLE_ROOT_CERT_URL, { responseType: "arraybuffer" }),
+        axios.get<ArrayBuffer>(APPLE_INTERMEDIATE_CERT_URL, { responseType: "arraybuffer" }),
+      ])
+  );
   cachedRootPem = derToPem(Buffer.from(rootRes.data));
   cachedInterPem = derToPem(Buffer.from(interRes.data));
   cachedAt = now;
