@@ -47,10 +47,11 @@ const sections: LegalSection[] = [
     ],
   },
   {
-    title: "Vercel Web Analytics",
+    title: "Vercel Web Analytics and Speed Insights",
     paragraphs: [
-      "UDID Tools may use Vercel Web Analytics on public informational pages to understand aggregate traffic, page views, referrers, devices, countries or regions, and similar usage metrics. This helps evaluate whether SEO and documentation improvements are working.",
-      "Vercel Web Analytics is intended for product and traffic measurement, not advertising or cross-site marketing tracking. The analytics component is not intentionally rendered on the /success results page because that page may contain device identifiers in URL parameters.",
+      "UDID Tools uses Vercel Web Analytics on public informational pages to understand aggregate traffic, page views, referrers, devices, countries or regions, and similar usage metrics. This helps evaluate whether SEO and documentation improvements are working.",
+      "Vercel Speed Insights measures real-user performance signals such as page loading, visual stability, responsiveness, and server response timing, grouped by public route and technical context. These measurements help identify slow pages and regressions.",
+      "Vercel Web Analytics and Speed Insights are intended for product, traffic, reliability, and performance measurement, not advertising or cross-site marketing tracking. Neither component is intentionally rendered on the /success results page because that page may contain device identifiers in URL parameters.",
     ],
   },
   {
