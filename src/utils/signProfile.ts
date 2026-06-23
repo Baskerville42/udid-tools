@@ -76,10 +76,17 @@ function getSignerFromP12() {
 
   const keyPem = forge.pki.privateKeyToPem(privateKey);
   const certPem = forge.pki.certificateToPem(signerCert);
-  const extraPems = certBags
-    .filter(hasCert)
-    .map((b) => forge.pki.certificateToPem(b.cert))
-    .filter((pem) => pem !== certPem);
+  const extraPems: string[] = [];
+  for (const bag of certBags) {
+    if (!hasCert(bag)) {
+      continue;
+    }
+
+    const pem = forge.pki.certificateToPem(bag.cert);
+    if (pem !== certPem) {
+      extraPems.push(pem);
+    }
+  }
 
   return { keyPem, certPem, extraPems };
 }

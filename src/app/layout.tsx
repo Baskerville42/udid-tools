@@ -112,6 +112,21 @@ const webApplicationJsonLd = {
     "A free open-source utility for retrieving an iPhone or iPad UDID through Safari using an iOS configuration profile flow.",
 };
 
+function safeJsonForHtml(value: unknown) {
+  return JSON.stringify(value).replace(/[<>&]/g, (character) => {
+    switch (character) {
+      case "<":
+        return "\\u003c";
+      case ">":
+        return "\\u003e";
+      case "&":
+        return "\\u0026";
+      default:
+        return character;
+    }
+  });
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -127,14 +142,14 @@ export default function RootLayout({
           id="ld-website"
           type="application/ld+json"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonForHtml(websiteJsonLd) }}
         />
         {/* JSON-LD: WebApplication */}
         <Script
           id="ld-web-application"
           type="application/ld+json"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(webApplicationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonForHtml(webApplicationJsonLd) }}
         />
         <VercelAnalytics />
       </body>
