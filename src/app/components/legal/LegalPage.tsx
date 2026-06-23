@@ -19,7 +19,11 @@ type LegalPageProps = {
   sections: LegalSection[];
 };
 
-function renderTextWithLinks(text: string) {
+type TextWithLinksProps = {
+  text: string;
+};
+
+function TextWithLinks({ text }: TextWithLinksProps) {
   const parts = text.split(
     /(https?:\/\/[^\s.]+(?:\.[^\s.]+)*|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/gi
   );
@@ -95,7 +99,7 @@ export default function LegalPage({
                 <div className="space-y-4">
                   {section.paragraphs?.map((paragraph) => (
                     <p key={paragraph} className="leading-7 text-slate-600">
-                      {renderTextWithLinks(paragraph)}
+                      <TextWithLinks text={paragraph} />
                     </p>
                   ))}
                 </div>
@@ -103,7 +107,7 @@ export default function LegalPage({
                   <ul className="mt-4 list-disc space-y-2 pl-6 text-slate-600 marker:text-blue-500">
                     {section.items.map((item) => (
                       <li key={item} className="pl-1 leading-7">
-                        {renderTextWithLinks(item)}
+                        <TextWithLinks text={item} />
                       </li>
                     ))}
                   </ul>
