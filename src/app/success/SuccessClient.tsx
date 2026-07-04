@@ -45,7 +45,7 @@ type ResultAnalyticsAttributes = {
 
 function SuccessContent() {
   const searchParams = useSearchParams();
-  const [copied, setCopied] = useState(false);
+  const [copiedFormat, setCopiedFormat] = useState<"txt" | "json" | null>(null);
   const [status] = useState("success"); // 'success', 'error', 'pending'
 
   const fields = useMemo(() => {
@@ -172,9 +172,9 @@ function SuccessContent() {
       data: { format: as, outcome: ok ? "success" : "failure" },
     });
     if (ok) {
-      setCopied(true);
+      setCopiedFormat(as);
       toast.success(`All device info${as === "json" ? " (JSON)" : ""} copied to clipboard`);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopiedFormat(null), 2000);
     } else {
       toast.error("Copy failed. Please copy manually.");
     }
@@ -213,12 +213,18 @@ function SuccessContent() {
 
   const shareAll = async () => {
     if (!navigator.share) {
+      const ok = await writeClipboardSafe(formatFields(true));
       trackResultAnalytics("result_page_action", {
         action: "share",
         button: "share",
-        outcome: "unavailable",
+        outcome: ok ? "copied_fallback" : "unavailable",
         share_available: false,
       });
+      if (ok) {
+        toast.success("Native sharing is unavailable, so device info was copied to clipboard");
+      } else {
+        toast.error("Sharing is unavailable in this browser. Please copy the data manually.");
+      }
       return;
     }
 
@@ -351,8 +357,12 @@ function SuccessContent() {
               variant="outline"
               size="sm"
               onClick={shareAll}
-              disabled={!canShare}
               className="gap-2"
+              title={
+                canShare
+                  ? "Share device information"
+                  : "Native sharing is unavailable, so this copies device info instead"
+              }
             >
               <Share2 className="h-4 w-4" />
               Share
@@ -365,7 +375,7 @@ function SuccessContent() {
             </p>
             <div className="flex w-full flex-col gap-2 sm:flex-row sm:flex-wrap">
               <Button variant="outline" onClick={() => handleCopyAll()} className="gap-2">
-                {copied ? (
+                {copiedFormat === "txt" ? (
                   <>
                     <Check className="h-4 w-4 text-green-600" />
                     Copied
@@ -378,8 +388,17 @@ function SuccessContent() {
                 )}
               </Button>
               <Button variant="outline" onClick={() => handleCopyAll("json")} className="gap-2">
-                <Copy className="h-4 w-4" />
-                Copy JSON
+                {copiedFormat === "json" ? (
+                  <>
+                    <Check className="h-4 w-4 text-green-600" />
+                    Copied
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-4 w-4" />
+                    Copy JSON
+                  </>
+                )}
               </Button>
               <Button variant="outline" onClick={downloadTxt} className="gap-2">
                 Download .txt
