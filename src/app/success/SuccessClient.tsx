@@ -3,6 +3,7 @@
 import * as Sentry from "@sentry/nextjs";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { inject, track } from "@vercel/analytics";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, AlertCircle, Copy, Check, Smartphone, ArrowLeft, Share2 } from "lucide-react";
 import { toast } from "sonner";
@@ -11,7 +12,11 @@ import Footer from "@/app/components/Footer";
 import MotionWrapper from "@/app/components/MotionWrapper";
 import DeviceInfoCard from "@/app/components/success/DeviceInfoCard";
 import { Button } from "@/app/components/ui/button";
-import { sampleDeviceData } from "@/app/success/sampleDeviceData";
+import {
+  sampleDeviceData,
+  SAMPLE_RESULT_QUERY_PARAM,
+  SAMPLE_RESULT_SOURCE,
+} from "@/app/success/sampleDeviceData";
 import { writeClipboardSafe } from "@/utils/clipboard";
 
 type FieldKey = "UDID" | "IMEI" | "MEID" | "PRODUCT" | "SERIAL" | "VERSION";
@@ -37,18 +42,43 @@ function SuccessContent() {
 
   const nonEmpty = fields.filter((field) => !!field.value);
   const hasDeviceInfo = nonEmpty.length > 0;
+  const resultSource =
+    searchParams.get(SAMPLE_RESULT_QUERY_PARAM) === SAMPLE_RESULT_SOURCE
+      ? SAMPLE_RESULT_SOURCE
+      : "profile";
 
   useEffect(() => {
     const outcome = hasDeviceInfo ? "success" : "missing_device_info";
+    const attributes = {
+      field_count: nonEmpty.length,
+      outcome,
+      result_source: resultSource,
+      stage: "result_rendered",
+    };
+
     Sentry.addBreadcrumb({
       category: "udid-flow",
       message: "Device result rendered",
-      data: { field_count: nonEmpty.length, outcome, stage: "result_rendered" },
+      data: attributes,
     });
+    Sentry.logger.info("device_result_rendered", attributes);
     Sentry.metrics.count("udid_tools.flow.completed", 1, {
-      attributes: { outcome },
+      attributes: { outcome, result_source: resultSource },
     });
-  }, [hasDeviceInfo, nonEmpty.length]);
+  }, [hasDeviceInfo, nonEmpty.length, resultSource]);
+
+  useEffect(() => {
+    if (resultSource !== SAMPLE_RESULT_SOURCE) {
+      return;
+    }
+
+    inject({ disableAutoTrack: true });
+    track("sample_result_viewed", {
+      field_count: nonEmpty.length,
+      outcome: hasDeviceInfo ? "success" : "missing_device_info",
+    });
+  }, [hasDeviceInfo, nonEmpty.length, resultSource]);
+
   const deviceData: DeviceData = {
     ...sampleDeviceData,
     udid: searchParams.get("UDID") || sampleDeviceData.udid,
