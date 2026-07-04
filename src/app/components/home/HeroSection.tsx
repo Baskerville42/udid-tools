@@ -2,6 +2,7 @@ import React from "react";
 import { ArrowRight, Shield, Zap } from "lucide-react";
 import Link from "next/link";
 import MotionWrapper from "@/app/components/MotionWrapper";
+import DesktopQrCode from "@/app/components/home/DesktopQrCode";
 import { sampleDeviceSuccessUrl } from "@/app/success/sampleDeviceData";
 
 export default function HeroSection() {
@@ -11,8 +12,8 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(59,130,246,0.05),transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.03),transparent_50%)]" />
 
-      <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
-        <div className="mx-auto max-w-3xl text-center">
+      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-24 md:py-32 xl:grid-cols-[minmax(0,1fr)_220px]">
+        <div className="mx-auto max-w-3xl text-center xl:mx-0 xl:text-left">
           <MotionWrapper
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -53,7 +54,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row xl:justify-start"
           >
             <Link
               href="/api/register.signed.mobileconfig"
@@ -82,7 +83,7 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-16 flex items-center justify-center gap-8 text-sm text-slate-500"
+            className="mt-16 flex items-center justify-center gap-8 text-sm text-slate-500 xl:justify-start"
           >
             <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-green-500" />
@@ -98,6 +99,7 @@ export default function HeroSection() {
             </div>
           </MotionWrapper>
         </div>
+        <DesktopQrCode />
       </div>
     </section>
   );
