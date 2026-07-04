@@ -4,7 +4,16 @@ import * as Sentry from "@sentry/nextjs";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { CheckCircle, AlertCircle, Copy, Check, Smartphone, ArrowLeft, Share2 } from "lucide-react";
+import {
+  CheckCircle,
+  AlertCircle,
+  Copy,
+  Check,
+  Smartphone,
+  ArrowLeft,
+  Share2,
+  Info,
+} from "lucide-react";
 import { toast } from "sonner";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
@@ -55,6 +64,7 @@ function SuccessContent() {
     searchParams.get(SAMPLE_RESULT_QUERY_PARAM) === SAMPLE_RESULT_SOURCE
       ? SAMPLE_RESULT_SOURCE
       : "profile";
+  const isSampleResult = resultSource === SAMPLE_RESULT_SOURCE;
 
   const trackResultAnalytics = useCallback(
     (eventName: ResultAnalyticsEventName, attributes: ResultAnalyticsAttributes = {}) => {
@@ -258,6 +268,25 @@ function SuccessContent() {
           <ArrowLeft className="h-4 w-4" />
           Back to Home
         </Link>
+
+        {hasDeviceInfo && status === "success" && isSampleResult ? (
+          <MotionWrapper
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="mb-8 flex items-center gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
+              <Info className="h-5 w-5 text-blue-600" />
+            </div>
+            <div>
+              <p className="font-medium text-blue-900">Sample result preview</p>
+              <p className="text-sm text-blue-700">
+                The details below show an example of the information we receive from a device.
+              </p>
+            </div>
+          </MotionWrapper>
+        ) : null}
 
         <MotionWrapper
           initial={{ opacity: 0, y: -10 }}

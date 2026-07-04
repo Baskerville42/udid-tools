@@ -1,8 +1,11 @@
 "use client";
 
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
+
+const VercelAnalyticsScripts = dynamic(() => import("@/app/components/VercelAnalyticsScripts"), {
+  ssr: false,
+});
 
 export default function VercelAnalytics() {
   const pathname = usePathname();
@@ -11,10 +14,5 @@ export default function VercelAnalytics() {
     return null;
   }
 
-  return (
-    <>
-      <Analytics />
-      <SpeedInsights />
-    </>
-  );
+  return <VercelAnalyticsScripts />;
 }
