@@ -29,7 +29,7 @@ import { writeClipboardSafe } from "@/utils/clipboard";
 
 type FieldKey = "UDID" | "IMEI" | "MEID" | "PRODUCT" | "SERIAL" | "VERSION";
 
-type DeviceData = typeof sampleDeviceData;
+type DeviceData = Record<keyof typeof sampleDeviceData, string>;
 type ResultAnalyticsEventName = "result_page_viewed" | "result_page_action";
 type ResultAnalyticsAttributes = {
   action?: string;
@@ -135,15 +135,17 @@ function SuccessContent() {
     });
   }, [hasDeviceInfo, trackResultAnalytics]);
 
+  const getDeviceDataValue = (field: FieldKey, sampleKey: keyof typeof sampleDeviceData) =>
+    searchParams.get(field) ?? (isSampleResult ? sampleDeviceData[sampleKey] : "");
+
   const deviceData: DeviceData = {
-    ...sampleDeviceData,
-    udid: searchParams.get("UDID") || sampleDeviceData.udid,
-    model: searchParams.get("PRODUCT") || sampleDeviceData.model,
-    version: searchParams.get("VERSION") || sampleDeviceData.version,
-    serial: searchParams.get("SERIAL") || sampleDeviceData.serial,
-    product: searchParams.get("PRODUCT") || sampleDeviceData.product,
-    imei: searchParams.get("IMEI") || sampleDeviceData.imei,
-    meid: searchParams.get("MEID") || sampleDeviceData.meid,
+    udid: getDeviceDataValue("UDID", "udid"),
+    model: getDeviceDataValue("PRODUCT", "model"),
+    version: getDeviceDataValue("VERSION", "version"),
+    serial: getDeviceDataValue("SERIAL", "serial"),
+    product: getDeviceDataValue("PRODUCT", "product"),
+    imei: getDeviceDataValue("IMEI", "imei"),
+    meid: getDeviceDataValue("MEID", "meid"),
   };
 
   const formatFields = (includeEmpty = false) =>
