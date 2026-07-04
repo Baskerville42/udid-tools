@@ -1,68 +1,76 @@
 # Security Policy
 
+UDID Tools handles a narrow iOS developer workflow: retrieving device attributes
+returned by Apple's configuration profile flow and showing them to the user in a
+browser result page.
+
+Security reports are welcome. Please use responsible disclosure so issues can be
+validated and fixed before details are public.
+
 ## Supported Versions
 
-The project currently maintains the following versions:
+Security fixes target the current `main` branch and the production deployment at
+[https://www.udid.tools](https://www.udid.tools).
 
-- The main branch (`main`)
-- Latest stable release (if available)
+## Reporting A Vulnerability
 
-Only these versions receive security updates and patches.
+Please do not open a public issue with exploit details, private identifiers,
+logs, or proof-of-concept payloads.
 
----
+Preferred options:
 
-## Reporting a Vulnerability
+1. Use GitHub's private vulnerability reporting feature if it is available for
+   this repository.
+2. Contact the maintainer privately using the email listed on the GitHub profile.
 
-If you discover a security issue, please follow responsible disclosure guidelines:
+If you must open a public issue, keep it high level and avoid sensitive details.
 
-### 🔒 Do **not** open a public issue with exploit details.
+## What To Include
 
-Instead:
+When possible, include:
 
-### Option 1 — Private Contact (Recommended)
+- A clear summary of the issue.
+- Steps to reproduce.
+- Affected URL or flow.
+- Expected and actual behavior.
+- Impact assessment.
+- Browser, device, iOS version, and Node.js version if relevant.
+- Logs or proof-of-concept details sent privately.
 
-Contact the repository owner privately through the email listed on the GitHub profile.
+## Scope
 
-### Option 2 — Minimal Public Report
+Useful reports include:
 
-If you prefer to open an issue:
+- Problems in configuration profile generation or signing.
+- Result-page privacy leaks.
+- Incorrect indexing of private result URLs.
+- Cross-site scripting or injection issues.
+- Exposure of secrets, certificates, or sensitive environment variables.
+- Vulnerabilities in dependencies that affect this project.
 
-- Do not include sensitive or detailed exploit information.
-- Provide only a high‑level description.
-- Add the label **`security`**.
+Out of scope:
 
----
+- Social engineering.
+- Automated noisy scans without a working impact explanation.
+- Denial-of-service testing against production.
+- Reports that depend on a compromised user device or browser extension.
 
-## What to Include in a Report
+## Response Expectations
 
-To help us investigate, please include (when possible):
+The project aims to:
 
-- Clear description of the vulnerability
-- Steps to reproduce the issue
-- Expected vs. actual behavior
-- Impact assessment (what could go wrong)
-- Node.js version
-- Operating system / environment
-- Any logs or proof-of-concept (sent privately)
+1. Acknowledge valid reports within 48 hours.
+2. Validate reproducible issues within 5-10 days.
+3. Prioritize fixes based on user impact.
+4. Credit reporters when appropriate and requested.
 
----
+## Research Rules
 
-## Response Process
+Please:
 
-1. We will confirm receipt of your report within **48 hours**.
-2. Investigation and validation typically occur within **5–10 days**.
-3. You will be kept informed throughout the process.
-4. A fix will be developed and released as soon as possible.
-5. Credit will be given in release notes (unless you'd prefer to remain anonymous).
+- Avoid destructive testing.
+- Do not access or retain other users' data.
+- Do not publicly disclose details before a fix is available.
+- Keep testing limited to accounts, devices, and data you control.
 
----
-
-## Responsible Disclosure
-
-We ask researchers and contributors to:
-
-- Avoid public disclosure until a fix is released.
-- Avoid performing destructive testing on production deployments.
-- Follow ethical research principles.
-
-Thank you for helping keep the project secure!
+Thank you for helping keep UDID Tools safe and trustworthy.

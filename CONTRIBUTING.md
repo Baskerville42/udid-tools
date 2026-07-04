@@ -1,99 +1,104 @@
-# Contributing Guide
+# Contributing To UDID Tools
 
-Thank you for your interest in contributing to this project!  
-All contributions are welcome — from bug reports and feature requests to code improvements and documentation updates.
+Thanks for helping improve UDID Tools. This project is intentionally focused: it
+helps people retrieve an iPhone or iPad UDID through Safari for development,
+beta testing, QA, and device registration workflows.
 
-This document explains how to contribute effectively and respectfully.
+Good contributions make that flow clearer, safer, faster, or easier to trust.
 
----
+## Useful Contribution Areas
 
-## 🧩 How You Can Contribute
+- Improve UDID, iOS provisioning, beta testing, and device identifier guides.
+- Improve accessibility and responsive behavior.
+- Improve metadata, sitemap behavior, structured content, and SEO correctness.
+- Improve privacy, security, and result-page handling.
+- Improve error states around the iOS configuration profile flow.
+- Add focused tests for important logic.
+- Clarify setup, certificates, and local development documentation.
 
-### 1. Report Bugs
+## Before Opening A Pull Request
 
-If you find a bug, please open an issue using the **Bug Report** template.  
-Include:
+Please keep changes focused. A small pull request that solves one clear problem
+is much easier to review than a broad rewrite.
 
-- Clear description of the problem
-- Steps to reproduce
-- Expected vs actual behavior
-- Logs, screenshots if helpful
+Before submitting:
 
-### 2. Request Features
+1. Check existing issues and pull requests for related work.
+2. Create a branch with a descriptive name.
+3. Follow the current project structure and TypeScript style.
+4. Update documentation when behavior or setup changes.
+5. Run the relevant checks locally.
 
-To propose new functionality, open an issue using the **Feature Request** template.  
-Describe:
+## Local Setup
 
-- The problem or need
-- The proposed solution
-- Alternatives you considered
+Install dependencies:
 
-### 3. Submit Pull Requests
+```bash
+npm install
+```
 
-We gladly accept PRs! Before submitting:
+Start the development server:
 
-1. Make sure there is an open issue describing your change — or create one.
-2. Fork the project and create a new branch:
-   ```
-   git checkout -b feature/my-improvement
-   ```
-3. Follow code style and formatting rules:
-   ```
-   npm run lint
-   npm run format
-   ```
-4. Add or update tests when needed.
-5. Ensure the PR title clearly describes the change.
-6. Submit the PR using the **Pull Request Template**.
+```bash
+npm run dev
+```
 
----
+Open [http://localhost:3000](http://localhost:3000).
 
-## 🛠 Development Setup
+The full UDID retrieval flow requires valid Apple certificates for signing the
+configuration profile. See the README for the required environment variables.
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/Baskerville42/udid-tools.git
-   ```
-2. Install dependencies:
-   ```
-   npm install
-   ```
-3. Start the development environment:
-   ```
-   npm run dev
-   ```
+## Checks
 
----
+Run linting before opening a pull request:
 
-## 🔧 Coding Standards
+```bash
+npm run lint
+```
 
-- Use **TypeScript** for all new code.
-- Follow the project structure and naming conventions.
-- Use **ESLint** and **Prettier** (auto-run via scripts).
-- Write clear, concise commit messages.
+Run a production build when you change routing, metadata, sitemap behavior,
+profile generation, or other user-facing flows:
 
----
+```bash
+npm run build
+```
 
-## 🧪 Testing
+Format files before committing:
 
-- Add tests for all logic changes when practical.
-- Run tests before submitting a PR:
-  ```
-  npm test
-  ```
+```bash
+npm run format
+```
 
----
+## Pull Request Guidelines
 
-## 🤝 Code of Conduct
+Use a clear title and include:
 
-By participating, you agree to follow the **Code of Conduct** included in this repository.
+- What changed.
+- Why the change is useful.
+- How you tested it.
+- Screenshots or recordings for visible UI changes.
+- Notes about privacy, security, or SEO impact when relevant.
 
----
+## Content Guidelines
 
-## 📬 Questions?
+UDID Tools should be accurate and calm. Avoid overclaiming security guarantees,
+traffic numbers, or Apple affiliation. Prefer practical explanations that help
+developers and testers solve the specific UDID problem.
 
-If you have questions or need clarification:
+When editing guides:
 
-- Open a Discussion or Issue on GitHub.
+- Use plain language.
+- Keep the answer close to the search intent.
+- Explain when Safari is required.
+- Make clear that a UDID should only be shared with trusted developers or teams.
+- Do not imply that UDID Tools is an official Apple service.
 
-Thank you for helping to improve this project!
+## Code Of Conduct
+
+By participating, you agree to follow the
+[Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Security Reports
+
+Do not include sensitive vulnerability details in public issues. See
+[SECURITY.md](SECURITY.md) for responsible disclosure guidance.
