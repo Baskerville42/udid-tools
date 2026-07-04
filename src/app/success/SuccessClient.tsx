@@ -25,6 +25,7 @@ import {
   SAMPLE_RESULT_QUERY_PARAM,
   SAMPLE_RESULT_SOURCE,
 } from "@/app/success/sampleDeviceData";
+import { getAppleDeviceModelName } from "@/utils/appleDeviceModels";
 import { writeClipboardSafe } from "@/utils/clipboard";
 
 type FieldKey = "UDID" | "IMEI" | "MEID" | "PRODUCT" | "SERIAL" | "VERSION";
@@ -140,7 +141,7 @@ function SuccessContent() {
 
   const deviceData: DeviceData = {
     udid: getDeviceDataValue("UDID", "udid"),
-    model: getDeviceDataValue("PRODUCT", "model"),
+    model: getAppleDeviceModelName(getDeviceDataValue("PRODUCT", "model")),
     version: getDeviceDataValue("VERSION", "version"),
     serial: getDeviceDataValue("SERIAL", "serial"),
     product: getDeviceDataValue("PRODUCT", "product"),
