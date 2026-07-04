@@ -2,6 +2,26 @@
 User-agent: *
 Allow: /
 
+# Bingbot
+User-agent: Bingbot
+Allow: /
+
+# DuckDuckBot
+User-agent: DuckDuckBot
+Allow: /
+
+# OAI-SearchBot
+User-agent: OAI-SearchBot
+Allow: /
+
+# ChatGPT-User
+User-agent: ChatGPT-User
+Allow: /
+
+# GPTBot
+User-agent: GPTBot
+Allow: /
+
 # Host
 Host: https://www.udid.tools
 

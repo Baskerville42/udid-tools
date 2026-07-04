@@ -46,6 +46,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "indexnow:submit": "node scripts/submit-indexnow.mjs",
+    "indexnow:dry-run": "node scripts/submit-indexnow.mjs --dry-run",
     "postbuild": "next-sitemap",
     "format": "prettier --write ."
   },
