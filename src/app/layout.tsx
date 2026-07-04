@@ -21,6 +21,7 @@ const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  manifest: "/site.webmanifest",
   title: {
     default: "Get iPhone UDID Online - No iTunes or Xcode",
     template: "%s · UDID Tools",
@@ -74,10 +75,13 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico" },
+      { url: "/icon-16.png", sizes: "16x16", type: "image/png" },
       { url: "/icon-32.png", sizes: "32x32", type: "image/png" },
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#006fff" }],
   },
   category: "utilities",
   applicationName: SITE_NAME,
