@@ -19,6 +19,7 @@ type DeviceInfoCardProps = {
   label: string;
   value: string;
   copyValue?: string;
+  secondaryLabel?: string;
   secondaryValue?: string;
   type: keyof typeof iconMap;
   isPrimary?: boolean;
@@ -33,6 +34,7 @@ export default function DeviceInfoCard({
   label,
   value,
   copyValue,
+  secondaryLabel,
   secondaryValue,
   type,
   isPrimary = false,
@@ -83,20 +85,26 @@ export default function DeviceInfoCard({
             <p className="mb-1 text-xs font-medium tracking-wider text-slate-500 uppercase">
               {label}
             </p>
-            <div className="flex flex-wrap items-center gap-2">
-              <p
-                className={`font-mono text-sm break-all ${
-                  isPrimary ? "font-semibold text-blue-900" : "text-slate-800"
-                }`}
-              >
-                {value}
-              </p>
-              {secondaryValue ? (
-                <span className="rounded-md bg-slate-100 px-2 py-0.5 font-mono text-xs text-slate-500">
-                  {secondaryValue}
-                </span>
-              ) : null}
-            </div>
+            <p
+              className={`font-mono text-sm break-all ${
+                isPrimary ? "font-semibold text-blue-900" : "text-slate-800"
+              }`}
+            >
+              {value}
+            </p>
+            {secondaryValue ? (
+              <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
+                {secondaryLabel ? (
+                  <>
+                    <span className="font-medium tracking-wide text-slate-400 uppercase">
+                      {secondaryLabel}
+                    </span>
+                    <span className="h-1 w-1 rounded-full bg-slate-300" aria-hidden="true" />
+                  </>
+                ) : null}
+                <span className="font-mono text-slate-600">{secondaryValue}</span>
+              </div>
+            ) : null}
           </div>
         </div>
 

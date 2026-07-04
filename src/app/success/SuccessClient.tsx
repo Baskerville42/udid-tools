@@ -407,9 +407,10 @@ function SuccessContent() {
                 label="OS Version"
                 value={osVersion.displayValue}
                 copyValue={osVersion.copyValue}
+                secondaryLabel="Build"
                 secondaryValue={
                   osVersion.rawBuild && osVersion.displayValue !== `Build ${osVersion.rawBuild}`
-                    ? `Build ${osVersion.rawBuild}`
+                    ? osVersion.rawBuild
                     : undefined
                 }
                 type="version"
