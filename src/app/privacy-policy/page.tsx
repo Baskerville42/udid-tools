@@ -51,7 +51,7 @@ const sections: LegalSection[] = [
     paragraphs: [
       "UDID Tools uses Vercel Web Analytics on public informational pages to understand aggregate traffic, page views, referrers, devices, countries or regions, and similar usage metrics. This helps evaluate whether SEO and documentation improvements are working.",
       "Vercel Speed Insights measures real-user performance signals such as page loading, visual stability, responsiveness, and server response timing, grouped by public route and technical context. These measurements help identify slow pages and regressions.",
-      "Vercel Web Analytics and Speed Insights are intended for product, traffic, reliability, and performance measurement, not advertising or cross-site marketing tracking. Neither component is intentionally rendered on the /success results page because that page may contain device identifiers in URL parameters.",
+      "Vercel Web Analytics and Speed Insights are intended for product, traffic, reliability, and performance measurement, not advertising or cross-site marketing tracking. The client-side analytics and speed components are not intentionally rendered on the /success results page because that page may contain device identifiers in URL parameters. The /success page may send limited server-side custom analytics events, such as result source, field count, button action, field type, and outcome. Those events are designed to exclude UDID, serial number, IMEI, MEID, and other device identifier values.",
     ],
   },
   {
@@ -109,7 +109,7 @@ export default function PrivacyPolicyPage() {
       label="Privacy"
       title="Privacy Policy"
       description="This policy describes how UDID Tools processes information while helping you retrieve your Apple device UDID and related device details."
-      lastUpdated="June 21, 2026"
+      lastUpdated="July 4, 2026"
       sections={sections}
     />
   );

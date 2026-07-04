@@ -20,6 +20,11 @@ type DeviceInfoCardProps = {
   value: string;
   type: keyof typeof iconMap;
   isPrimary?: boolean;
+  onCopy?: (details: {
+    field_label: string;
+    field_type: keyof typeof iconMap;
+    outcome: string;
+  }) => void;
 };
 
 export default function DeviceInfoCard({
@@ -27,15 +32,22 @@ export default function DeviceInfoCard({
   value,
   type,
   isPrimary = false,
+  onCopy,
 }: DeviceInfoCardProps) {
   const [copied, setCopied] = useState(false);
   const Icon = iconMap[type] || Hash;
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(value);
-    setCopied(true);
-    toast.success(`${label} copied to clipboard`);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(value);
+      onCopy?.({ field_label: label, field_type: type, outcome: "success" });
+      setCopied(true);
+      toast.success(`${label} copied to clipboard`);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      onCopy?.({ field_label: label, field_type: type, outcome: "failure" });
+      toast.error("Copy failed. Please copy manually.");
+    }
   };
 
   return (

@@ -1,9 +1,8 @@
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { inject, track } from "@vercel/analytics";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, AlertCircle, Copy, Check, Smartphone, ArrowLeft, Share2 } from "lucide-react";
 import { toast } from "sonner";
@@ -22,6 +21,16 @@ import { writeClipboardSafe } from "@/utils/clipboard";
 type FieldKey = "UDID" | "IMEI" | "MEID" | "PRODUCT" | "SERIAL" | "VERSION";
 
 type DeviceData = typeof sampleDeviceData;
+type ResultAnalyticsEventName = "result_page_viewed" | "result_page_action";
+type ResultAnalyticsAttributes = {
+  action?: string;
+  button?: string;
+  field_label?: string;
+  field_type?: string;
+  format?: string;
+  outcome?: string;
+  share_available?: boolean;
+};
 
 function SuccessContent() {
   const searchParams = useSearchParams();
@@ -47,6 +56,48 @@ function SuccessContent() {
       ? SAMPLE_RESULT_SOURCE
       : "profile";
 
+  const trackResultAnalytics = useCallback(
+    (eventName: ResultAnalyticsEventName, attributes: ResultAnalyticsAttributes = {}) => {
+      const payload = {
+        event_name: eventName,
+        field_count: nonEmpty.length,
+        has_device_info: hasDeviceInfo,
+        result_source: resultSource,
+        ...attributes,
+      };
+
+      Sentry.addBreadcrumb({
+        category: "udid-flow.analytics",
+        message: eventName,
+        data: payload,
+      });
+      Sentry.metrics.count("udid_tools.result.analytics_event", 1, {
+        attributes: {
+          action: attributes.action ?? "none",
+          event_name: eventName,
+          outcome: attributes.outcome ?? "none",
+          result_source: resultSource,
+        },
+      });
+
+      void fetch("/api/analytics/result-action", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        keepalive: true,
+        referrerPolicy: "no-referrer",
+      }).catch(() => {
+        Sentry.addBreadcrumb({
+          category: "udid-flow.analytics",
+          message: "Result analytics event failed",
+          level: "warning",
+          data: { event_name: eventName, result_source: resultSource },
+        });
+      });
+    },
+    [hasDeviceInfo, nonEmpty.length, resultSource]
+  );
+
   useEffect(() => {
     const outcome = hasDeviceInfo ? "success" : "missing_device_info";
     const attributes = {
@@ -68,16 +119,11 @@ function SuccessContent() {
   }, [hasDeviceInfo, nonEmpty.length, resultSource]);
 
   useEffect(() => {
-    if (resultSource !== SAMPLE_RESULT_SOURCE) {
-      return;
-    }
-
-    inject({ disableAutoTrack: true });
-    track("sample_result_viewed", {
-      field_count: nonEmpty.length,
+    trackResultAnalytics("result_page_viewed", {
       outcome: hasDeviceInfo ? "success" : "missing_device_info",
+      share_available: typeof navigator !== "undefined" && "share" in navigator,
     });
-  }, [hasDeviceInfo, nonEmpty.length, resultSource]);
+  }, [hasDeviceInfo, trackResultAnalytics]);
 
   const deviceData: DeviceData = {
     ...sampleDeviceData,
@@ -117,6 +163,12 @@ function SuccessContent() {
     } else {
       toast.error("Copy failed. Please copy manually.");
     }
+    trackResultAnalytics("result_page_action", {
+      action: "copy_all",
+      button: as === "json" ? "copy_json" : "copy_all",
+      format: as,
+      outcome: ok ? "success" : "failure",
+    });
   };
 
   const downloadTxt = () => {
@@ -134,16 +186,38 @@ function SuccessContent() {
       message: "Device info downloaded",
       data: { format: "txt" },
     });
+    trackResultAnalytics("result_page_action", {
+      action: "download",
+      button: "download_txt",
+      format: "txt",
+      outcome: "success",
+    });
   };
 
   const canShare = typeof navigator !== "undefined" && "share" in navigator;
 
   const shareAll = async () => {
+    if (!navigator.share) {
+      trackResultAnalytics("result_page_action", {
+        action: "share",
+        button: "share",
+        outcome: "unavailable",
+        share_available: false,
+      });
+      return;
+    }
+
     try {
-      await navigator.share?.({ title: "Device info", text: formatFields(true) });
+      await navigator.share({ title: "Device info", text: formatFields(true) });
       Sentry.addBreadcrumb({
         category: "udid-flow.action",
         message: "Native share completed",
+      });
+      trackResultAnalytics("result_page_action", {
+        action: "share",
+        button: "share",
+        outcome: "success",
+        share_available: true,
       });
     } catch {
       Sentry.addBreadcrumb({
@@ -151,7 +225,27 @@ function SuccessContent() {
         message: "Native share dismissed",
         level: "info",
       });
+      trackResultAnalytics("result_page_action", {
+        action: "share",
+        button: "share",
+        outcome: "dismissed",
+        share_available: true,
+      });
     }
+  };
+
+  const handleFieldCopy = (details: {
+    field_label: string;
+    field_type: string;
+    outcome: string;
+  }) => {
+    trackResultAnalytics("result_page_action", {
+      action: "copy_field",
+      button: "copy_field",
+      field_label: details.field_label,
+      field_type: details.field_type,
+      outcome: details.outcome,
+    });
   };
 
   return (
@@ -260,21 +354,61 @@ function SuccessContent() {
           </div>
 
           <div className="space-y-4 p-6">
-            <DeviceInfoCard label="UDID" value={deviceData.udid} type="udid" isPrimary={true} />
+            <DeviceInfoCard
+              label="UDID"
+              value={deviceData.udid}
+              type="udid"
+              isPrimary={true}
+              onCopy={handleFieldCopy}
+            />
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <DeviceInfoCard label="Device Model" value={deviceData.model} type="model" />
-              <DeviceInfoCard label="iOS Version" value={deviceData.version} type="version" />
+              <DeviceInfoCard
+                label="Device Model"
+                value={deviceData.model}
+                type="model"
+                onCopy={handleFieldCopy}
+              />
+              <DeviceInfoCard
+                label="iOS Version"
+                value={deviceData.version}
+                type="version"
+                onCopy={handleFieldCopy}
+              />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <DeviceInfoCard label="Serial Number" value={deviceData.serial} type="serial" />
-              <DeviceInfoCard label="Product Type" value={deviceData.product} type="product" />
+              <DeviceInfoCard
+                label="Serial Number"
+                value={deviceData.serial}
+                type="serial"
+                onCopy={handleFieldCopy}
+              />
+              <DeviceInfoCard
+                label="Product Type"
+                value={deviceData.product}
+                type="product"
+                onCopy={handleFieldCopy}
+              />
             </div>
 
-            {deviceData.imei && <DeviceInfoCard label="IMEI" value={deviceData.imei} type="imei" />}
+            {deviceData.imei && (
+              <DeviceInfoCard
+                label="IMEI"
+                value={deviceData.imei}
+                type="imei"
+                onCopy={handleFieldCopy}
+              />
+            )}
 
-            {deviceData.meid && <DeviceInfoCard label="MEID" value={deviceData.meid} type="imei" />}
+            {deviceData.meid && (
+              <DeviceInfoCard
+                label="MEID"
+                value={deviceData.meid}
+                type="imei"
+                onCopy={handleFieldCopy}
+              />
+            )}
           </div>
 
           <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-100 bg-slate-50 px-6 py-5 sm:flex-row">
@@ -297,6 +431,13 @@ function SuccessContent() {
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium text-blue-600 hover:text-blue-700"
+              onClick={() =>
+                trackResultAnalytics("result_page_action", {
+                  action: "open_external_link",
+                  button: "apple_developer_portal",
+                  outcome: "clicked",
+                })
+              }
             >
               Go to Apple Developer Portal →
             </a>
