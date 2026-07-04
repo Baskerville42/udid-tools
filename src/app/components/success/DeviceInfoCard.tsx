@@ -18,6 +18,8 @@ const iconMap = {
 type DeviceInfoCardProps = {
   label: string;
   value: string;
+  copyValue?: string;
+  secondaryValue?: string;
   type: keyof typeof iconMap;
   isPrimary?: boolean;
   onCopy?: (details: {
@@ -30,6 +32,8 @@ type DeviceInfoCardProps = {
 export default function DeviceInfoCard({
   label,
   value,
+  copyValue,
+  secondaryValue,
   type,
   isPrimary = false,
   onCopy,
@@ -39,7 +43,7 @@ export default function DeviceInfoCard({
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(value);
+      await navigator.clipboard.writeText(copyValue ?? value);
       onCopy?.({ field_label: label, field_type: type, outcome: "success" });
       setCopied(true);
       toast.success(`${label} copied to clipboard`);
@@ -79,13 +83,20 @@ export default function DeviceInfoCard({
             <p className="mb-1 text-xs font-medium tracking-wider text-slate-500 uppercase">
               {label}
             </p>
-            <p
-              className={`font-mono text-sm break-all ${
-                isPrimary ? "font-semibold text-blue-900" : "text-slate-800"
-              }`}
-            >
-              {value}
-            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <p
+                className={`font-mono text-sm break-all ${
+                  isPrimary ? "font-semibold text-blue-900" : "text-slate-800"
+                }`}
+              >
+                {value}
+              </p>
+              {secondaryValue ? (
+                <span className="rounded-md bg-slate-100 px-2 py-0.5 font-mono text-xs text-slate-500">
+                  {secondaryValue}
+                </span>
+              ) : null}
+            </div>
           </div>
         </div>
 

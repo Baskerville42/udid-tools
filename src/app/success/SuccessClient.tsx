@@ -26,6 +26,7 @@ import {
   SAMPLE_RESULT_SOURCE,
 } from "@/app/success/sampleDeviceData";
 import { getAppleDeviceModelName } from "@/utils/appleDeviceModels";
+import { formatAppleOsVersion } from "@/utils/appleOsVersions";
 import { writeClipboardSafe } from "@/utils/clipboard";
 
 type FieldKey = "UDID" | "IMEI" | "MEID" | "PRODUCT" | "SERIAL" | "VERSION";
@@ -148,6 +149,7 @@ function SuccessContent() {
     imei: getDeviceDataValue("IMEI", "imei"),
     meid: getDeviceDataValue("MEID", "meid"),
   };
+  const osVersion = formatAppleOsVersion(deviceData.product, deviceData.version);
 
   const formatFields = (includeEmpty = false) =>
     (includeEmpty ? fields : nonEmpty)
@@ -402,8 +404,14 @@ function SuccessContent() {
                 onCopy={handleFieldCopy}
               />
               <DeviceInfoCard
-                label="iOS Version"
-                value={deviceData.version}
+                label="OS Version"
+                value={osVersion.displayValue}
+                copyValue={osVersion.copyValue}
+                secondaryValue={
+                  osVersion.rawBuild && osVersion.displayValue !== `Build ${osVersion.rawBuild}`
+                    ? `Build ${osVersion.rawBuild}`
+                    : undefined
+                }
                 type="version"
                 onCopy={handleFieldCopy}
               />
