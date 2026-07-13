@@ -11,10 +11,16 @@ export function middleware(req: NextRequest) {
 
   const needsHostFix = url.hostname !== CANONICAL_HOST;
   const needsHttps = url.protocol !== "https:";
+  const hasSearchPlaceholder = url.searchParams.get("q") === "{search_term_string}";
+  const hasMalformedPath = url.pathname === "/$" || url.pathname === "/&";
 
-  if (needsHostFix || needsHttps) {
+  if (needsHostFix || needsHttps || hasSearchPlaceholder || hasMalformedPath) {
     url.hostname = CANONICAL_HOST;
     url.protocol = "https";
+    if (hasSearchPlaceholder || hasMalformedPath) {
+      url.pathname = "/";
+      url.search = "";
+    }
     return NextResponse.redirect(url, 301);
   }
 
