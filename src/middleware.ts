@@ -20,7 +20,11 @@ export function middleware(req: NextRequest) {
 
   const response = NextResponse.next();
 
-  if (url.pathname === "/success" || url.pathname.startsWith("/success/")) {
+  if (
+    url.pathname === "/success" ||
+    url.pathname.startsWith("/success/") ||
+    url.pathname.startsWith("/api/")
+  ) {
     response.headers.set("X-Robots-Tag", NOINDEX_HEADER_VALUE);
   }
 

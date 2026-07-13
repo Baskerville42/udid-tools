@@ -1,12 +1,18 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
+const NOINDEX_HEADER_VALUE = "noindex, nofollow, noarchive, nosnippet";
+
 const nextConfig: NextConfig = {
   async headers() {
     return [
       {
         source: "/success",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+        headers: [{ key: "X-Robots-Tag", value: NOINDEX_HEADER_VALUE }],
+      },
+      {
+        source: "/api/:path*",
+        headers: [{ key: "X-Robots-Tag", value: NOINDEX_HEADER_VALUE }],
       },
       {
         source: "/:path*",
