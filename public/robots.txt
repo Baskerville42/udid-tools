@@ -22,8 +22,6 @@ Allow: /
 User-agent: GPTBot
 Allow: /
 
-# Host
-Host: https://www.udid.tools
 
 # Sitemaps
 Sitemap: https://www.udid.tools/sitemap.xml

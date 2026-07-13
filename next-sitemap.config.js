@@ -14,6 +14,8 @@ module.exports = {
       { userAgent: "ChatGPT-User", allow: "/" },
       { userAgent: "GPTBot", allow: "/" },
     ],
+    transformRobotsTxt: async (_config, robotsTxt) =>
+      robotsTxt.replace(/\n# Host\nHost: https:\/\/www\.udid\.tools\n/g, "\n"),
     // sitemap автоматично додасться
   },
 };

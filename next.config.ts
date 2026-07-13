@@ -16,12 +16,6 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
-      {
-        source: "/",
-        has: [{ type: "query", key: "q", value: "\\{search_term_string\\}" }],
-        destination: "/",
-        permanent: true,
-      },
     ];
   },
   async headers() {
