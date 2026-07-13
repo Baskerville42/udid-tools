@@ -4,6 +4,26 @@ import type { NextConfig } from "next";
 const NOINDEX_HEADER_VALUE = "noindex, nofollow, noarchive, nosnippet";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/$",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/&",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/",
+        has: [{ type: "query", key: "q", value: "\\{search_term_string\\}" }],
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
