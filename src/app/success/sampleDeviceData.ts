@@ -9,6 +9,7 @@ export const sampleDeviceData = {
 };
 
 export const SAMPLE_RESULT_QUERY_PARAM = "RESULT_SOURCE";
+export const PROFILE_RESULT_SOURCE = "profile";
 export const SAMPLE_RESULT_SOURCE = "sample";
 
 export const sampleDeviceSuccessUrl = `/success?${new URLSearchParams({

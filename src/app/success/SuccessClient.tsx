@@ -21,6 +21,7 @@ import MotionWrapper from "@/app/components/MotionWrapper";
 import DeviceInfoCard from "@/app/components/success/DeviceInfoCard";
 import { Button } from "@/app/components/ui/button";
 import {
+  PROFILE_RESULT_SOURCE,
   sampleDeviceData,
   SAMPLE_RESULT_QUERY_PARAM,
   SAMPLE_RESULT_SOURCE,
@@ -65,7 +66,7 @@ function SuccessContent() {
   const resultSource =
     searchParams.get(SAMPLE_RESULT_QUERY_PARAM) === SAMPLE_RESULT_SOURCE
       ? SAMPLE_RESULT_SOURCE
-      : "profile";
+      : PROFILE_RESULT_SOURCE;
   const isSampleResult = resultSource === SAMPLE_RESULT_SOURCE;
 
   const trackResultAnalytics = useCallback(

@@ -1,11 +1,11 @@
 import { track } from "@vercel/analytics/server";
 import { NextResponse } from "next/server";
-import { SAMPLE_RESULT_SOURCE } from "@/app/success/sampleDeviceData";
+import { PROFILE_RESULT_SOURCE, SAMPLE_RESULT_SOURCE } from "@/app/success/sampleDeviceData";
 
 export const runtime = "nodejs";
 
 const EVENT_NAMES = new Set(["result_page_viewed", "result_page_action"]);
-const RESULT_SOURCES = new Set([SAMPLE_RESULT_SOURCE, "profile"]);
+const RESULT_SOURCES = new Set([SAMPLE_RESULT_SOURCE, PROFILE_RESULT_SOURCE]);
 
 type AnalyticsPayload = {
   action?: unknown;

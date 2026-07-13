@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 import { NextResponse } from "next/server";
+import { PROFILE_RESULT_SOURCE, SAMPLE_RESULT_QUERY_PARAM } from "@/app/success/sampleDeviceData";
 import { recordApiResult } from "@/lib/observability/server";
 import { createQueryStringFromDict, parseXMLData } from "@/utils/retrieveData";
 
@@ -39,7 +40,10 @@ export async function POST(request: Request) {
       () => createQueryStringFromDict(dict)
     );
 
-    const url = new URL(`/success?${queryString}`, request.url);
+    const resultParams = new URLSearchParams(queryString);
+    resultParams.set(SAMPLE_RESULT_QUERY_PARAM, PROFILE_RESULT_SOURCE);
+
+    const url = new URL(`/success?${resultParams.toString()}`, request.url);
     recordApiResult({
       durationMs: performance.now() - startedAt,
       requestId,
