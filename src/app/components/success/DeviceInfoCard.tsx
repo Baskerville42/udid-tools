@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Copy, Check, Fingerprint, Smartphone, Layers, Hash, Cpu, Wifi } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
-import { toast } from "sonner";
 import MotionWrapper from "@/app/components/MotionWrapper";
+import { writeClipboardSafe } from "@/utils/clipboard";
 
 const iconMap = {
   udid: Fingerprint,
@@ -40,20 +40,26 @@ export default function DeviceInfoCard({
   isPrimary = false,
   onCopy,
 }: DeviceInfoCardProps) {
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">("idle");
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const Icon = iconMap[type] || Hash;
 
+  useEffect(() => {
+    return () => {
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+    };
+  }, []);
+
+  const setTemporaryStatus = (nextStatus: "copied" | "failed") => {
+    if (resetTimer.current) clearTimeout(resetTimer.current);
+    setCopyStatus(nextStatus);
+    resetTimer.current = setTimeout(() => setCopyStatus("idle"), 2000);
+  };
+
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(copyValue ?? value);
-      onCopy?.({ field_label: label, field_type: type, outcome: "success" });
-      setCopied(true);
-      toast.success(`${label} copied to clipboard`);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      onCopy?.({ field_label: label, field_type: type, outcome: "failure" });
-      toast.error("Copy failed. Please copy manually.");
-    }
+    const ok = await writeClipboardSafe(copyValue ?? value);
+    onCopy?.({ field_label: label, field_type: type, outcome: ok ? "success" : "failure" });
+    setTemporaryStatus(ok ? "copied" : "failed");
   };
 
   return (
@@ -113,14 +119,23 @@ export default function DeviceInfoCard({
           size="icon"
           onClick={handleCopy}
           className={`h-9 w-9 flex-shrink-0 rounded-lg ${
-            copied
+            copyStatus === "copied"
               ? "bg-green-100 text-green-600"
+              : copyStatus === "failed"
+                ? "bg-red-100 text-red-600"
               : "text-slate-400 hover:bg-slate-100 hover:text-slate-600"
           }`}
         >
-          {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+          {copyStatus === "copied" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
         </Button>
       </div>
+      <p className="sr-only" aria-live="polite">
+        {copyStatus === "copied"
+          ? `${label} copied to clipboard`
+          : copyStatus === "failed"
+            ? "Copy failed. Please copy manually."
+            : ""}
+      </p>
     </MotionWrapper>
   );
 }

@@ -1,8 +1,10 @@
 const SENSITIVE_KEY_PATTERN =
   /^(authorization|cookie|set-cookie|body|request_body|response_body|query_string|udid|imei|meid|serial)$/i;
+const URL_KEY_PATTERN = /^(url|referrer|href|from|to)$/i;
 
 type SentryLikeEvent = {
   breadcrumbs?: Array<{ data?: Record<string, unknown>; message?: string }>;
+  tags?: Record<string, unknown>;
   request?: {
     cookies?: unknown;
     data?: unknown;
@@ -26,15 +28,17 @@ export function stripUrlDetails(value: string): string {
   }
 }
 
+function scrubValue(key: string, value: unknown): unknown {
+  if (SENSITIVE_KEY_PATTERN.test(key)) return "[Filtered]";
+  if (typeof value === "string" && URL_KEY_PATTERN.test(key)) return stripUrlDetails(value);
+  if (Array.isArray(value)) return value.map((item) => scrubValue(key, item));
+  if (value && typeof value === "object") return scrubRecord(value as Record<string, unknown>);
+  return value;
+}
+
 function scrubRecord(record: Record<string, unknown>): Record<string, unknown> {
   return Object.fromEntries(
-    Object.entries(record).map(([key, value]) => {
-      if (SENSITIVE_KEY_PATTERN.test(key)) return [key, "[Filtered]"];
-      if (typeof value === "string" && /(url|referrer|href)$/i.test(key)) {
-        return [key, stripUrlDetails(value)];
-      }
-      return [key, value];
-    })
+    Object.entries(record).map(([key, value]) => [key, scrubValue(key, value)])
   );
 }
 
@@ -49,6 +53,7 @@ export function scrubSentryEvent<T extends SentryLikeEvent>(event: T): T {
   }
 
   if (event.transaction) event.transaction = stripUrlDetails(event.transaction);
+  if (event.tags) event.tags = scrubRecord(event.tags);
   event.breadcrumbs = event.breadcrumbs?.map((breadcrumb) => ({
     ...breadcrumb,
     data: breadcrumb.data ? scrubRecord(breadcrumb.data) : breadcrumb.data,

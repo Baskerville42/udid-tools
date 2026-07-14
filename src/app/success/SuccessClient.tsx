@@ -1,7 +1,7 @@
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -14,7 +14,6 @@ import {
   Share2,
   Info,
 } from "lucide-react";
-import { toast } from "sonner";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import MotionWrapper from "@/app/components/MotionWrapper";
@@ -47,6 +46,8 @@ type ResultAnalyticsAttributes = {
 function SuccessContent() {
   const searchParams = useSearchParams();
   const [copiedFormat, setCopiedFormat] = useState<"txt" | "json" | null>(null);
+  const [actionFeedback, setActionFeedback] = useState<string | null>(null);
+  const feedbackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [status] = useState("success"); // 'success', 'error', 'pending'
 
   const fields = useMemo(() => {
@@ -84,15 +85,6 @@ function SuccessContent() {
         message: eventName,
         data: payload,
       });
-      Sentry.metrics.count("udid_tools.result.analytics_event", 1, {
-        attributes: {
-          action: attributes.action ?? "none",
-          event_name: eventName,
-          outcome: attributes.outcome ?? "none",
-          result_source: resultSource,
-        },
-      });
-
       void fetch("/api/analytics/result-action", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -125,16 +117,26 @@ function SuccessContent() {
       message: "Device result rendered",
       data: attributes,
     });
-    Sentry.logger.info("device_result_rendered", attributes);
-    Sentry.metrics.count("udid_tools.flow.completed", 1, {
-      attributes: { outcome, result_source: resultSource },
-    });
   }, [hasDeviceInfo, nonEmpty.length, resultSource]);
+
+  useEffect(() => {
+    return () => {
+      if (feedbackTimer.current) clearTimeout(feedbackTimer.current);
+    };
+  }, []);
+
+  const setTemporaryFeedback = (message: string | null) => {
+    if (feedbackTimer.current) clearTimeout(feedbackTimer.current);
+    setActionFeedback(message);
+    if (message) {
+      feedbackTimer.current = setTimeout(() => setActionFeedback(null), 3000);
+    }
+  };
 
   useEffect(() => {
     trackResultAnalytics("result_page_viewed", {
       outcome: hasDeviceInfo ? "success" : "missing_device_info",
-      share_available: typeof navigator !== "undefined" && "share" in navigator,
+      share_available: "share" in navigator,
     });
   }, [hasDeviceInfo, trackResultAnalytics]);
 
@@ -174,10 +176,10 @@ function SuccessContent() {
     });
     if (ok) {
       setCopiedFormat(as);
-      toast.success(`All device info${as === "json" ? " (JSON)" : ""} copied to clipboard`);
+      setTemporaryFeedback(`All device info${as === "json" ? " (JSON)" : ""} copied`);
       setTimeout(() => setCopiedFormat(null), 2000);
     } else {
-      toast.error("Copy failed. Please copy manually.");
+      setTemporaryFeedback("Copy failed. Please copy manually.");
     }
     trackResultAnalytics("result_page_action", {
       action: "copy_all",
@@ -210,8 +212,6 @@ function SuccessContent() {
     });
   };
 
-  const canShare = typeof navigator !== "undefined" && "share" in navigator;
-
   const shareAll = async () => {
     if (!navigator.share) {
       const ok = await writeClipboardSafe(formatFields(true));
@@ -222,9 +222,9 @@ function SuccessContent() {
         share_available: false,
       });
       if (ok) {
-        toast.success("Native sharing is unavailable, so device info was copied to clipboard");
+        setTemporaryFeedback("Native sharing is unavailable, so device info was copied");
       } else {
-        toast.error("Sharing is unavailable in this browser. Please copy the data manually.");
+        setTemporaryFeedback("Sharing is unavailable in this browser. Please copy manually.");
       }
       return;
     }
@@ -359,11 +359,7 @@ function SuccessContent() {
               size="sm"
               onClick={shareAll}
               className="gap-2"
-              title={
-                canShare
-                  ? "Share device information"
-                  : "Native sharing is unavailable, so this copies device info instead"
-              }
+              title="Share device information"
             >
               <Share2 className="h-4 w-4" />
               Share
@@ -405,6 +401,9 @@ function SuccessContent() {
                 Download .txt
               </Button>
             </div>
+            <p className="mt-3 min-h-5 text-sm text-slate-600" aria-live="polite">
+              {actionFeedback}
+            </p>
           </div>
 
           <div className="space-y-4 p-6">
